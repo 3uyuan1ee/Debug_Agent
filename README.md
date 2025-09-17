@@ -366,7 +366,7 @@ git commit -m "test: 添加Agent测试用例"
 
 ### 技术支持
 - **GitHub Issues**: https://github.com/3uyuan1ee/Debug_Agent/issues
-- **邮件支持**: [your-email@example.com]
+
 - **文档**: 查看 `/docs` 目录下的详细文档
 
 ### 社区资源
