@@ -202,6 +202,9 @@ jobs:
         print(f"AI分析完成，发现 {ai_findings['analysis_summary']['total_issues']} 个问题")
         EOF
 
+      env:
+        ZHIPUAI_API_KEY: ${{ secrets.ZHIPUAI_API_KEY }}
+
     - name: Generate real-time feedback
       run: |
         echo "=== 生成实时反馈 ==="
@@ -254,7 +257,12 @@ jobs:
             if analysis['recommendations']:
                 feedback += "## 💡 改进建议\n"
                 for rec in analysis['recommendations']:
-                    priority_icon = "🔴" if rec['priority'] == 'high' else "🟡" if rec['priority'] == 'medium' else "🟢"
+                    if rec['priority'] == 'high':
+                        priority_icon = "🔴"
+                    elif rec['priority'] == 'medium':
+                        priority_icon = "🟡"
+                    else:
+                        priority_icon = "🟢"
                     feedback += f"{priority_icon} **{rec['action']}** - {rec['description']}\n"
                 feedback += "\n"
 
@@ -546,6 +554,9 @@ jobs:
         print("质量趋势报告生成完成")
         EOF
 
+      env:
+        ZHIPUAI_API_KEY: ${{ secrets.ZHIPUAI_API_KEY }}
+
     - name: Upload trend analysis
       uses: actions/upload-artifact@v3
       with:
@@ -732,15 +743,3 @@ jobs:
         path: |
           comprehensive-summary.md
           summary-data.json
-
-  # 清理旧文件
-  cleanup:
-    name: Clean Up Old Artifacts
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-    - name: Clean up old artifacts
-      run: |
-        echo "清理超过7天的旧文件..."
-        # 这里可以添加清理逻辑
