@@ -1,31 +1,33 @@
 # AI Agent Configuration File
+# 专注于缺陷检测和质量分析，不进行自动修复
 
 # Agent Settings
 agent:
-  name: "Debug Agent"
+  name: "Debug Detection Agent"
   version: "1.0.0"
-  description: "AI-powered bug detection and auto-fix system"
+  description: "AI-powered bug detection and quality analysis system"
+  mode: "detection_only"  # 只检测，不修复
 
   # Agent Behavior Settings
   behavior:
-    auto_fix_enabled: true
+    auto_fix_enabled: false      # 禁用自动修复
     confidence_threshold: 0.7
-    max_fix_attempts: 3
+    max_analysis_depth: 3
     safety_mode: true
     require_confirmation: true
 
   # Learning Settings
   learning:
     enabled: true
-    learn_from_fixes: true
+    learn_from_patterns: true
     feedback_collection: true
-    pattern_recognition: true
+    trend_analysis: true
 
   # Communication Settings
   communication:
     create_issues: true
-    create_prs: true
-    notify_on_fix: true
+    create_prs: false           # 不自动创建PR
+    notify_on_detection: true
     detailed_reports: true
 
 # Bug Detection Settings
@@ -39,101 +41,156 @@ bug_detection:
     - style
     - documentation
     - tests
+    - maintainability
 
   # Detection Methods
   methods:
     static_analysis:
       enabled: true
       tools:
-        - bandit
-        - flake8
-        - pylint
-        - safety
-        - mypy
+        - bandit          # 安全扫描
+        - flake8          # 代码风格
+        - pylint          # 代码质量
+        - safety          # 依赖安全
+        - mypy           # 类型检查
+        - radon          # 复杂度分析
 
     dynamic_analysis:
       enabled: true
       tools:
-        - pytest
-        - unittest
-        - integration_tests
+        - pytest         # 单元测试
+        - unittest       # 标准测试
+        - integration_tests  # 集成测试
 
     ai_analysis:
       enabled: true
-      model: "gpt-4"
+      model: "glm-4.5"    # 使用智谱GLM-4.5模型
+      provider: "zhipuai"
       temperature: 0.3
       max_tokens: 2000
+      api_key: "${{ secrets.ZHIPUAI_API_KEY }}"
+
+  # Detection Focus Areas
+  focus_areas:
+    security:
+      - hardcoded_secrets
+      - sql_injection
+      - xss_vulnerability
+      - input_validation
+      - authentication_issues
+
+    performance:
+      - algorithm_efficiency
+      - memory_usage
+      - database_queries
+      - api_responsiveness
+
+    quality:
+      - code_duplication
+      - complexity_metrics
+      - test_coverage
+      - documentation_completeness
+
+    maintainability:
+      - code_structure
+      - naming_conventions
+      - comment_quality
+      - modularity
 
   # Severity Levels
   severity:
     critical:
-      auto_fix: true
+      notify_immediately: true
       create_issue: true
       priority: "immediate"
 
     high:
-      auto_fix: true
+      notify_immediately: true
       create_issue: true
       priority: "high"
 
     medium:
-      auto_fix: false
+      notify_immediately: false
       create_issue: true
       priority: "medium"
 
     low:
-      auto_fix: false
+      notify_immediately: false
       create_issue: false
       priority: "low"
 
-# Auto-Fix Settings
-auto_fix:
-  # Fix Strategies
-  strategies:
-    security:
-      enabled: true
-      patterns:
-        - hardcoded_secrets
-        - sql_injection
-        - xss_vulnerability
-        - input_validation
+# Reporting Settings
+reporting:
+  # Report Formats
+  formats:
+    - json
+    - markdown
+    - html
 
-    performance:
-      enabled: true
-      patterns:
-        - algorithm_optimization
-        - memory_leaks
-        - inefficient_loops
-        - caching_opportunities
+  # Report Content
+  content:
+    executive_summary: true
+    detailed_findings: true
+    code_examples: true
+    recommendations: true
+    risk_assessment: true
+    trend_analysis: true
 
-    syntax:
-      enabled: true
-      patterns:
-        - import_formatting
-        - missing_semicolons
-        - bracket_mismatch
-        - indentation
-
-    logic:
-      enabled: false  # Dangerous to auto-fix logic bugs
-      patterns:
-        - null_pointer
-        - division_by_zero
-        - infinite_loops
-        - race_conditions
-
-  # Fix Validation
-  validation:
-    compile_check: true
-    test_suite: true
-    lint_check: true
-    security_scan: true
-
-  # Rollback Settings
-  rollback:
+  # Real-time Feedback
+  real_time:
     enabled: true
-    timeout: 300  # 5 minutes
-    auto_rollback: true
+    triggers:
+      - push
+      - pull_request
+    response_time: "5min"  # 5分钟内反馈
+
+  # Trend Analysis
+  trends:
+    enabled: true
+    analysis_period: 30    # 30天趋势分析
+    comparison_points:
+      - daily
+      - weekly
+      - monthly
+
+  # Schedule
+  schedule:
+    daily_scan: true
+    weekly_summary: true
+    monthly_analysis: true
+
+  # Distribution
+  distribution:
+    github_issues: true
+    pr_comments: true
+    email_report: false
+    slack_notification: false
+    file_storage: true
+
+# Quality Metrics
+quality_metrics:
+  # Core Metrics
+  core:
+    - bug_density
+    - code_coverage
+    - complexity_score
+    - technical_debt_ratio
+    - security_vulnerabilities
+
+  # Advanced Metrics
+  advanced:
+    - maintainability_index
+    - reliability_index
+    - test_effectiveness
+    - documentation_coverage
+    - code_churn_rate
+
+  # Custom Metrics
+  custom:
+    - team_velocity
+    - review_time
+    - fix_time
+    - recurrence_rate
 
 # Integration Settings
 integrations:
@@ -141,14 +198,15 @@ integrations:
   github:
     enabled: true
     create_issues: true
-    create_prs: true
+    comment_on_pr: true
     assign_issues: false
     label_issues: true
     issue_labels:
       - "ai-detected"
       - "bug"
       - "needs-review"
-      - "auto-fix"
+      - "quality-issue"
+      - "security-issue"
 
   # Slack Integration
   slack:
@@ -157,8 +215,8 @@ integrations:
     channel: "#dev-alerts"
     notify_on:
       - critical_bugs
-      - auto_fix_applied
-      - deployment_failed
+      - daily_summary
+      - weekly_analysis
 
   # Email Integration
   email:
@@ -170,66 +228,36 @@ integrations:
     recipients:
       - "dev-team@example.com"
 
-# Reporting Settings
-reporting:
-  # Report Formats
-  formats:
-    - json
-    - markdown
-    - html
-    - xml
-
-  # Report Content
-  content:
-    executive_summary: true
-    detailed_findings: true
-    code_examples: true
-    fix_suggestions: true
-    risk_assessment: true
-
-  # Schedule
-  schedule:
-    daily_report: true
-    weekly_summary: true
-    monthly_analysis: true
-
-  # Distribution
-  distribution:
-    github_issues: true
-    email_report: false
-    slack_notification: false
-    file_storage: true
-
 # Monitoring and Metrics
 monitoring:
   # Metrics to Track
   metrics:
     - bugs_detected
-    - fixes_applied
-    - success_rate
+    - detection_accuracy
     - false_positive_rate
     - response_time
     - code_quality_score
+    - trend_indicators
 
   # Alerts
   alerts:
-    high_error_rate:
-      threshold: 0.1
+    high_burden:
+      threshold: 50  # issues per day
       enabled: true
 
-    low_success_rate:
-      threshold: 0.7
+    quality_decline:
+      threshold: 0.2  # 20% decline
       enabled: true
 
-    performance_degradation:
-      threshold: 0.2
+    security_incident:
+      threshold: 1    # any critical issue
       enabled: true
 
 # Security Settings
 security:
   # API Keys and Secrets
   api_keys:
-    openai: "${{ secrets.OPENAI_API_KEY }}"
+    zhipuai: "${{ secrets.ZHIPUAI_API_KEY }}"
     github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   # Access Control
@@ -239,8 +267,8 @@ security:
       - "admin"
       - "developers"
     restricted_operations:
-      - "direct_database_access"
       - "system_configuration"
+      - "data_export"
 
   # Data Privacy
   data_privacy:
@@ -296,40 +324,84 @@ performance:
     queue_size: 100
     timeout: 600  # seconds
 
-# Experimental Features
-experimental:
-  # Machine Learning
-  ml_features:
-    enabled: false
-    model_training: false
-    predictive_analysis: false
+# Analysis Settings
+analysis:
+  # Analysis Depth
+  depth:
+    file_level: true
+    function_level: true
+    project_level: true
 
-  # Advanced Analytics
-  analytics:
-    enabled: false
-    trend_analysis: false
-    correlation_analysis: false
+  # Analysis Scope
+  scope:
+    include_patterns:
+      - "*.py"
+      - "*.js"
+      - "*.ts"
+      - "*.java"
+      - "*.cpp"
+      - "*.c"
 
-  # Natural Language Processing
-  nlp:
-    enabled: false
-    sentiment_analysis: false
-    text_summarization: false
+    exclude_patterns:
+      - "*/tests/*"
+      - "*/node_modules/*"
+      - "*/venv/*"
+      - "*/.git/*"
+      - "*.min.js"
+
+  # Analysis Frequency
+  frequency:
+    on_push: true
+    on_pr: true
+    scheduled: true
+    manual: true
 
 # Environment Specific Settings
 environments:
   development:
     debug: true
-    auto_fix: false
-    create_issues: false
+    verbose_logging: true
+    test_mode: true
 
   staging:
     debug: false
-    auto_fix: true
-    create_issues: true
+    verbose_logging: false
+    test_mode: false
 
   production:
     debug: false
-    auto_fix: false
-    create_issues: true
-    require_approval: true
+    verbose_logging: false
+    test_mode: false
+    restricted_access: true
+
+# ZhipuAI GLM-4.5 Specific Settings
+zhipuai:
+  model: "glm-4.5"
+  api_base: "https://open.bigmodel.cn/api/paas/v4"
+  max_tokens: 2000
+  temperature: 0.3
+  top_p: 0.7
+  timeout: 30
+
+  # Prompts
+  prompts:
+    security_analysis: |
+      作为代码安全专家，请分析以下代码的安全性问题：
+      1. 识别潜在的安全漏洞
+      2. 评估风险等级
+      3. 提供具体的修复建议
+      4. 遵循OWASP安全标准
+
+    quality_analysis: |
+      作为代码质量专家，请分析以下代码的质量问题：
+      1. 识别代码质量问题
+      2. 评估可维护性
+      3. 提供改进建议
+      4. 遵循代码最佳实践
+
+    trend_analysis: |
+      作为数据分析师，请分析以下代码质量趋势数据：
+      1. 识别质量变化趋势
+      2. 分析潜在原因
+      3. 预测未来趋势
+      4. 提供改进建议
