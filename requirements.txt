@@ -1,3 +1,9 @@
+# LangChain核心依赖
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-anthropic>=0.1.0
+langchain-community>=0.0.20
+
 # 核心依赖
 ast-tools>=0.1.0
 dataclasses-json>=0.5.0
