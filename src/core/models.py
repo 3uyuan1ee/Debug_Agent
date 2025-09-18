@@ -130,17 +130,6 @@ class AnalysisContext:
     timestamp: datetime = field(default_factory=datetime.now)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
-@dataclass
-class AgentConfig:
-    """Agent配置基类"""
-    name: str
-    version: str
-    enabled: bool = True
-    log_level: str = "INFO"
-    ai_model: Optional[str] = None
-    max_retries: int = 3
-    timeout: int = 30
-    config_file: Optional[str] = None
 
 @dataclass
 class DecisionFactors:

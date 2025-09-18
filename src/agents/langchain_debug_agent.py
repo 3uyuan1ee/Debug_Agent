@@ -13,7 +13,8 @@ from langchain.memory import ConversationBufferMemory, ConversationSummaryMemory
 from langchain.schema import HumanMessage, AIMessage
 
 from ..core.base_agent import BaseAgent
-from ..core.models import AgentConfig, AnalysisResult, Strategy, SeverityLevel, IssueType
+from ..core.config import AgentConfig
+from ..core.models import AnalysisResult, Strategy, SeverityLevel, IssueType
 from ..core.exceptions import DebugAgentException
 
 
@@ -45,13 +46,27 @@ class LangChainDebugAgent(BaseAgent):
 
     def _initialize_llm(self):
         """初始化LLM"""
-        if config.ai_model and config.ai_model.startswith('gpt'):
-            return ChatOpenAI(model=config.ai_model, temperature=0.1)
-        elif config.ai_model and config.ai_model.startswith('claude'):
-            return ChatAnthropic(model=config.ai_model, temperature=0.1)
+        if self.config.ai_model and self.config.ai_model.startswith('gpt'):
+            # 使用配置中的API密钥
+            api_key = self.config.ai_api_key or None
+            if api_key:
+                return ChatOpenAI(model=self.config.ai_model, temperature=0.1, api_key=api_key)
+            else:
+                return ChatOpenAI(model=self.config.ai_model, temperature=0.1)
+        elif self.config.ai_model and self.config.ai_model.startswith('claude'):
+            # 使用配置中的API密钥
+            api_key = self.config.ai_api_key or None
+            if api_key:
+                return ChatAnthropic(model=self.config.ai_model, temperature=0.1, api_key=api_key)
+            else:
+                return ChatAnthropic(model=self.config.ai_model, temperature=0.1)
         else:
             # 默认使用GPT-4
-            return ChatOpenAI(model="gpt-4", temperature=0.1)
+            api_key = self.config.ai_api_key or None
+            if api_key:
+                return ChatOpenAI(model="gpt-4", temperature=0.1, api_key=api_key)
+            else:
+                return ChatOpenAI(model="gpt-4", temperature=0.1)
 
     def _create_analysis_chain(self):
         """创建代码分析链"""

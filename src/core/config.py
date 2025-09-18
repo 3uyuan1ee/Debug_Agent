@@ -8,7 +8,7 @@ from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 from enum import Enum
 
-from .models import AgentConfig, Strategy, SeverityLevel
+from .models import Strategy, SeverityLevel
 
 
 class LogType(Enum):
@@ -145,7 +145,7 @@ class TestDrivenRepairConfig:
 class CoordinatorConfig:
     """协调器配置"""
     # 策略选择配置
-    default_strategy: Strategy = Strategy.AUTO
+    default_strategy: str = "auto"
     strategy_weights: Dict[str, float] = field(default_factory=lambda: {
         "static_only": 0.3,
         "test_driven_only": 0.3,

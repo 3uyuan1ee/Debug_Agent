@@ -8,8 +8,9 @@ from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
 
 from ..core.base_agent import BaseAgent
+from ..core.config import AgentConfig
 from ..core.models import (
-    AgentConfig, AnalysisResult, AnalysisContext, Strategy,
+    AnalysisResult, AnalysisContext, Strategy,
     SeverityLevel, IssueType, ComplexityLevel, Metrics, ValidationResult
 )
 from ..core.exceptions import DebugAgentException, AnalysisException

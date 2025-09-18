@@ -9,8 +9,9 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 
 from ..core.base_agent import BaseAgent
+from ..core.config import AgentConfig
 from ..core.models import (
-    AgentConfig, AnalysisResult, SecurityIssue, QualityIssue, PerformanceIssue,
+    AnalysisResult, SecurityIssue, QualityIssue, PerformanceIssue,
     AnalysisContext, SeverityLevel, IssueType, ComplexityLevel
 )
 from ..core.exceptions import AnalysisException

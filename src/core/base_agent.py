@@ -9,7 +9,8 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from datetime import datetime
 
-from .models import AgentConfig, Metrics, ValidationResult
+from .config import AgentConfig
+from .models import Metrics, ValidationResult
 from .exceptions import DebugAgentException, TimeoutException
 from .constants import DEFAULT_CONFIG
 

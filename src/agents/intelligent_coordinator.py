@@ -12,7 +12,8 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 
 from ..core.base_agent import BaseAgent
-from ..core.models import AgentConfig, AnalysisResult, Strategy, SeverityLevel, IssueType, ComplexityLevel
+from ..core.config import AgentConfig
+from ..core.models import AnalysisResult, Strategy, SeverityLevel, IssueType, ComplexityLevel
 from ..core.exceptions import DebugAgentException
 from .static_analysis_agent import StaticAnalysisAgent
 from .test_driven_repair_agent import TestDrivenRepairAgent

@@ -16,7 +16,7 @@ from langchain.schema import HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 
-from ..core.models import AgentConfig
+from ..core.config import AgentConfig
 
 
 @dataclass
